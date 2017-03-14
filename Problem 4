@@ -1,0 +1,103 @@
+#You are given the following definitions:
+
+A run of monotonically increasing numbers means that a number at position k+1 in the sequence is greater than or equal to the number at position k in the sequence.
+A run of monotonically decreasing numbers means that a number at position k+1 in the sequence is less than or equal to the number at position k in the sequence.
+Implement a function that meets the specifications below.
+
+def longest_run(L):
+    """
+    Assumes L is a list of integers containing at least 2 elements.
+    Finds the longest run of numbers in L, where the longest run can
+    either be monotonically increasing or monotonically decreasing. 
+    In case of a tie for the longest run, choose the longest run 
+    that occurs first.
+    Does not modify the list.
+    Returns the sum of the longest run. 
+    """
+    
+    if len(L)==2:  
+        return sum(L)
+    else:
+        dic_D={}
+        dic_I={}
+        i=0
+        while i<=len(L)-1:    
+            D=[]
+            I=[]
+            try:
+                while L[i]>=L[i+1]:
+                    D.append(L[i])
+                    i+=1
+                D.append(L[i])    
+            except IndexError:
+                if L[i-1]>=L[i]:
+                    D.append(L[i])
+                break
+            dic_D[i]=D
+            try:
+                while L[i]<=L[i+1]:
+                    I.append(L[i])
+                    i+=1
+                I.append(L[i])    
+            except IndexError:
+                if L[i-1]<=L[i]:   
+                    I.append(L[i])
+                break
+            dic_I[i]=I
+        dic_I[i]=I
+        dic_D[i]=D
+        long_I=0
+        ans_I=[]
+        K_I=0
+        for key in dic_I:
+            if len(dic_I[key])>long_I:
+                long_I=len(dic_I[key])
+                ans_I=dic_I[key]
+                K_I=key
+            elif len(dic_I[key])==long_I:
+                if key<K_I:
+                    long_I=len(dic_I[key])
+                    ans_I=dic_I[key]
+                    K_I=key
+                else:
+                    long_I=long_I
+                    ans_I=ans_I
+                    K_I=K_I
+            else:
+                long_I=long_I
+                ans_I=ans_I
+                K_I=K_I
+        
+        
+        long_D=0
+        ans_D=[]
+        K_D=0
+        for key in dic_D:
+            if len(dic_D[key])>long_D:
+                long_D=len(dic_D[key])
+                ans_D=dic_D[key]
+                K_D=key
+            elif len(dic_D[key])==long_D:
+                if key<K_D:
+                    long_D=len(dic_D[key])
+                    ans_D=dic_D[key]
+                    K_D=key
+                else:
+                    long_D=long_D
+                    ans_D=ans_D
+                    K_D=K_D
+            else:
+                long_D=long_D
+                ans_D=ans_D
+                K_D=K_D
+        
+        
+        if long_D>long_I:
+            return sum(ans_D)
+        elif long_D==long_I:
+            if K_D<K_I:
+                return sum(ans_D)
+            else:
+                return sum(ans_I)
+        else:
+            return sum(ans_I)
